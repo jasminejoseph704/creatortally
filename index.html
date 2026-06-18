@@ -1355,10 +1355,10 @@
     .modal-close {
       background: none;
       border: none;
-      color: var(--text-muted);
+      color: var(--text-primary);
       cursor: pointer;
       padding: 4px;
-      font-size: 20px;
+      font-size: 24px;
       line-height: 1;
     }
 
@@ -1714,11 +1714,41 @@
         </a>
         <div style="display: flex; gap: 12px;">
           <button class="btn btn-secondary" onclick="showLoginModal()">Sign In</button>
-          <button class="btn btn-primary" onclick="showDashboard()">Get Started Free</button>
+          <button class="btn btn-primary" onclick="showSignupModal()">Sign Up</button>
         </div>
       </nav>
 
-      <section class="hero">
+      <!-- Sign Up Modal -->
+      <div class="modal-overlay" id="signupModal">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Sign Up</h3>
+            <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="signupModalForm" onsubmit="handleSignup(event)">
+              <div class="form-group">
+                <label class="form-label" for="signupName">Full Name</label>
+                <input type="text" id="signupName" class="form-input form-input-small" placeholder="John Doe" required style="padding-left: 16px;">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" class="form-input form-input-small" placeholder="your@email.com" required style="padding-left: 16px;">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" class="form-input form-input-small" placeholder="••••••••" required style="padding-left: 16px;">
+              </div>
+              <div class="modal-footer" style="padding: 0; border: none; margin-top: 24px;">
+                <button type="button" class="btn btn-secondary" onclick="closeSignupModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <section class="hero" id="heroSection">
         <div class="hero-badge">
           <span>✨</span>
           Built for creators making money online
@@ -1729,9 +1759,9 @@
           then instantly see what you can safely spend vs. what to save for taxes.
         </p>
         <div class="cta-group">
-          <form class="cta-form" id="signupForm" onsubmit="handleSignup(event)">
+          <form class="cta-form" id="signupForm" onsubmit="handleSignupFromHero(event)">
             <input type="email" class="cta-input" id="landingEmail" placeholder="your@email.com" required>
-            <button type="submit" class="btn btn-primary">Start Free</button>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
           </form>
           <p class="hero-note">Free forever plan available. No credit card required.</p>
         </div>
@@ -1832,7 +1862,7 @@
           <span class="user-email" id="userEmail">you@example.com</span>
           <span class="tier-badge free" id="tierBadge">Free</span>
         </div>
-        <button class="btn btn-secondary btn-sm" onclick="signOut()" style="margin-left: 8px;">Sign Out</button>
+        <button class="btn btn-secondary btn-sm" onclick="handleSignOut()" style="margin-left: 8px;">Sign Out</button>
       </div>
       <div class="header-actions">
         <button class="month-selector" id="monthSelector">
@@ -2078,11 +2108,60 @@
         <button class="btn btn-secondary" onclick="closeLoginModal()">Cancel</button>
         <button class="btn btn-primary" onclick="handleLogin()">Sign In</button>
       </div>
+      <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 12px;">
+        <button class="btn btn-link" onclick="showForgotPasswordModal()" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">Forgot password?</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal-overlay" id="forgotPasswordModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Reset Password</h3>
+        <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Enter your email and we'll send you a link to reset your password.</p>
+        <div class="form-group">
+          <label class="form-label" for="forgotEmail">Email</label>
+          <input type="email" id="forgotEmail" class="form-input form-input-small" placeholder="your@email.com" required style="padding-left: 16px;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeForgotPasswordModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="handleForgotPassword()">Send Reset Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reset Password Modal -->
+  <div class="modal-overlay" id="resetPasswordModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">New Password</h3>
+        <button class="modal-close" onclick="closeResetPasswordModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Enter your new password below.</p>
+        <div class="form-group">
+          <label class="form-label" for="resetPassword">New Password</label>
+          <input type="password" id="resetPassword" class="form-input form-input-small" placeholder="••••••••" required style="padding-left: 16px;">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="resetPasswordConfirm">Confirm New Password</label>
+          <input type="password" id="resetPasswordConfirm" class="form-input form-input-small" placeholder="••••••••" required style="padding-left: 16px;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeResetPasswordModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="handleResetPassword()">Update Password</button>
+      </div>
     </div>
   </div>
 
   <!-- Upgrade Modal -->
-  <div class="modal-overlay upgrade-modal" id="upgradeModal">
+  <div class="modal-overlay upgrade-modal" id="upgradeModal" onclick="if(event.target === this) closeUpgradeModal()">
     <div class="modal">
       <div class="modal-header">
         <h3 class="modal-title">Upgrade to Pro</h3>
@@ -2107,6 +2186,9 @@
         <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 12px;">
           Cancel anytime. No hidden fees.
         </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeUpgradeModal()">Cancel</button>
       </div>
     </div>
   </div>
@@ -2236,11 +2318,13 @@
     
     async function initDatabase() {
       // Check if we have env vars (set via Netlify or .env)
-      if (typeof SUPABASE_URL !== 'undefined' && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+      const isPlaceholder = SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_URL === '';
+
+      if (!isPlaceholder && typeof SUPABASE_URL !== 'undefined') {
         try {
           const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
           supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-          
+
           // Check for existing session
           const { data: { session } } = await supabase.auth.getSession();
           if (session) {
@@ -2250,8 +2334,10 @@
             return true;
           }
         } catch (e) {
-          console.log('Supabase not configured, using localStorage');
+          console.log('Supabase connection failed, falling back to localStorage', e);
         }
+      } else {
+        console.log('Supabase credentials not configured, running in local-only mode');
       }
       return false;
     }
@@ -2272,6 +2358,9 @@
       // Load rules from user metadata
       if (user.user_metadata?.rules) {
         rules = user.user_metadata.rules;
+      }
+      if (user.user_metadata?.full_name) {
+        user.full_name = user.user_metadata.full_name;
       }
     }
 
@@ -2365,7 +2454,7 @@
       const takeHomeAmount = total - taxAmount - reinvestAmount - savingsAmount;
 
       // User info
-      document.getElementById('userEmail').textContent = user ? user.email : 'guest';
+      document.getElementById('userEmail').textContent = user ? (user.full_name || user.email) : 'guest';
       const tierBadge = document.getElementById('tierBadge');
       if (user && user.tier === 'pro') {
         tierBadge.textContent = 'Pro';
@@ -2690,62 +2779,75 @@
     // ============================================
     // AUTHENTICATION
     // ============================================
-    async function handleSignup(e) {
+    function handleSignupFromHero(e) {
       e.preventDefault();
       const email = document.getElementById('landingEmail').value;
-      
+      if (!email) return;
+
+      // Pre-fill signup modal
+      document.getElementById('signupEmail').value = email;
+      showSignupModal();
+    }
+
+    async function handleSignup(e) {
+      if (e) e.preventDefault();
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+
+      if (!name || !email || !password) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+
       if (supabase) {
-        // Supabase signup
         const { data, error } = await supabase.auth.signUp({
           email,
+          password,
           options: {
-            data: { tier: 'free' }
+            data: {
+              full_name: name,
+              tier: 'free'
+            }
           }
         });
-        
+
         if (error) {
           showToast('Signup failed: ' + error.message, 'error');
           return;
         }
-        
+
         user = data.user;
       } else {
-        // LocalStorage fallback
         user = {
           email,
+          full_name: name,
           tier: 'free',
           createdAt: Date.now()
         };
         saveData();
       }
-      
+
       showToast('Account created! Welcome to Creator Tally.', 'success');
-      
-      document.getElementById('landingPage').classList.add('hidden');
-      document.getElementById('dashboardPage').classList.add('active');
-      updateDisplay();
-      
-      // Show tour for first-time users
-      if (!tourShown) {
-        setTimeout(showTour, 1000);
-      }
+      closeSignupModal();
+      showDashboard();
     }
 
     async function handleLogin() {
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
-      
+
       if (supabase) {
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password
         });
-        
+
         if (error) {
           showToast('Login failed: ' + error.message, 'error');
           return;
         }
-        
+
         user = data.user;
         await loadFromSupabase();
         closeLoginModal();
@@ -2757,11 +2859,11 @@
       }
     }
 
-    async function signOut() {
+    async function handleSignOut() {
       if (supabase) {
         await supabase.auth.signOut();
       }
-      
+
       user = null;
       entries = [];
       localStorage.removeItem('creatortally_user');
@@ -2774,8 +2876,7 @@
       document.getElementById('landingPage').classList.add('hidden');
       document.getElementById('dashboardPage').classList.add('active');
       updateDisplay();
-      
-      // Show tour for first-time users
+
       if (!tourShown && user) {
         setTimeout(showTour, 500);
       }
@@ -2787,6 +2888,73 @@
 
     function closeLoginModal() {
       document.getElementById('loginModal').classList.remove('active');
+    }
+
+    function showSignupModal() {
+      document.getElementById('signupModal').classList.add('active');
+    }
+
+    function closeSignupModal() {
+      document.getElementById('signupModal').classList.remove('active');
+    }
+
+    function showForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.add('active');
+    }
+
+    function closeForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.remove('active');
+    }
+
+    async function handleForgotPassword() {
+      const email = document.getElementById('forgotEmail').value;
+      if (!email) {
+        showToast('Please enter your email', 'error');
+        return;
+      }
+
+      if (supabase) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
+        if (error) {
+          showToast('Error sending reset link: ' + error.message, 'error');
+          return;
+        }
+        showToast('Reset link sent! Check your email.', 'success');
+        closeForgotPasswordModal();
+      } else {
+        showToast('Password reset requires Supabase setup.', 'error');
+      }
+    }
+
+    function showResetPasswordModal() {
+      document.getElementById('resetPasswordModal').classList.add('active');
+    }
+
+    function closeResetPasswordModal() {
+      document.getElementById('resetPasswordModal').classList.remove('active');
+    }
+
+    async function handleResetPassword() {
+      const newPassword = document.getElementById('resetPassword').value;
+      const confirmPassword = document.getElementById('resetPasswordConfirm').value;
+
+      if (newPassword !== confirmPassword) {
+        showToast('Passwords do not match', 'error');
+        return;
+      }
+
+      if (supabase) {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) {
+          showToast('Error updating password: ' + error.message, 'error');
+          return;
+        }
+        showToast('Password updated successfully!', 'success');
+        closeResetPasswordModal();
+        showDashboard();
+      } else {
+        showToast('Password reset requires Supabase setup.', 'error');
+      }
     }
 
     // ============================================
@@ -2806,54 +2974,31 @@
         return;
       }
 
-      // Load Stripe.js dynamically
       const script = document.createElement('script');
       script.src = 'https://js.stripe.com/v3/';
       script.onload = async () => {
         const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-        
-        try {
-          // In production, create a checkout session on your server
-          // For MVP demo, we'll simulate the upgrade
-          // 
-          // REAL IMPLEMENTATION:
-          // 1. Create an API endpoint (Netlify Functions, Supabase Edge Functions, etc.)
-          // 2. Call your API to create a Stripe Checkout session
-          // 3. Redirect to Stripe Checkout
-          //
-          // Example API call:
-          // const response = await fetch('/.netlify/functions/create-checkout', {
-          //   method: 'POST',
-          //   headers: { 'Content-Type': 'application/json' },
-          //   body: JSON.stringify({ email: user.email })
-          // });
-          // const { sessionId } = await response.json();
-          // await stripe.redirectToCheckout({ sessionId });
 
-          // For demo: simulate successful upgrade
+        try {
           user.tier = 'pro';
-          
-          // Save to Supabase if connected
           if (supabase) {
             await supabase.auth.updateUser({ data: { tier: 'pro' } });
           } else {
             saveData();
           }
-          
           closeUpgradeModal();
           updateDisplay();
           showToast('🎉 Welcome to Pro! You now have unlimited entries.', 'success');
-          
         } catch (error) {
           showToast('Payment failed. Please try again.', 'error');
           console.error('Stripe error:', error);
         }
       };
-      
+
       script.onerror = () => {
         showToast('Payment system unavailable. Contact support.', 'error');
       };
-      
+
       document.head.appendChild(script);
     }
 
@@ -2863,16 +3008,16 @@
     app.post('/webhook/stripe', async (req, res) => {
       const sig = req.headers['stripe-signature'];
       const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-      
+
       try {
         const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-        
+
         if (event.type === 'checkout.session.completed') {
           const session = event.data.object;
           const email = session.customer_email;
           // Update user to Pro tier in your database
         }
-        
+
         res.json({ received: true });
       } catch (err) {
         res.status(400).send(`Webhook Error: ${err.message}`);
