@@ -1311,13 +1311,14 @@
       inset: 0;
       background: rgba(0, 0, 0, 0.8);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       z-index: 1000;
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
       padding: 24px;
+      overflow-y: auto;
     }
 
     .modal-overlay.active {
@@ -1333,6 +1334,7 @@
       max-width: 480px;
       transform: scale(0.95);
       transition: transform 0.3s ease;
+      margin: auto;
     }
 
     .modal-overlay.active .modal {
@@ -1511,33 +1513,33 @@
 
     /* Upgrade Modal */
     .upgrade-modal .modal {
-      max-width: 420px;
+      max-width: 400px;
       text-align: center;
     }
 
     .upgrade-icon {
-      font-size: 64px;
-      margin-bottom: 16px;
+      font-size: 48px;
+      margin-bottom: 12px;
     }
 
     .upgrade-modal h3 {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
     .upgrade-modal p {
       color: var(--text-secondary);
       font-size: 0.875rem;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
 
     .upgrade-features {
       text-align: left;
       background: var(--card-elevated);
       border-radius: var(--radius-sm);
-      padding: 20px;
-      margin-bottom: 24px;
+      padding: 16px;
+      margin-bottom: 16px;
       list-style: none;
     }
 
@@ -1545,7 +1547,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 0;
+      padding: 6px 0;
       font-size: 0.875rem;
     }
 
@@ -1556,9 +1558,9 @@
 
     .upgrade-price {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .upgrade-price span {
