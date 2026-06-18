@@ -1,0 +1,2965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Creator Tally — Know How Much Is Actually Yours</title>
+  <meta name="description" content="Track sponsorships, platform payouts, and affiliate income. See your tax reserve, reinvest budget, and take-home pay instantly. Built for content creators who make money online.">
+  <meta name="keywords" content="creator finance, income tracker, freelancer money, content creator income, tax reserve calculator, sponsor tracking">
+  <meta name="author" content="Creator Tally">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://creatortally.app/">
+  <meta property="og:title" content="Creator Tally — Know How Much Is Actually Yours">
+  <meta property="og:description" content="Track sponsorships, platform payouts, and affiliate income. See your tax reserve, reinvest budget, and take-home pay instantly.">
+  <meta property="og:image" content="https://creatortally.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://creatortally.app/">
+  <meta name="twitter:title" content="Creator Tally — Know How Much Is Actually Yours">
+  <meta name="twitter:description" content="Track sponsorships, platform payouts, and affiliate income. See your tax reserve, reinvest budget, and take-home pay instantly.">
+  <meta name="twitter:image" content="https://creatortally.app/twitter-card.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322C55E'/%3E%3Cstop offset='100%25' stop-color='%2316A34A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='7' fill='url(%23g)'/%3E%3Cline x1='10' y1='8' x2='10' y2='24' stroke='%230F0F0F' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='15' y1='8' x2='15' y2='24' stroke='%230F0F0F' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='20' y1='8' x2='20' y2='24' stroke='%230F0F0F' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='7' y1='24' x2='23' y2='8' stroke='%230F0F0F' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%2322C55E'/%3E%3Cline x1='55' y1='40' x2='55' y2='140' stroke='%230F0F0F' stroke-width='12' stroke-linecap='round'/%3E%3Cline x1='85' y1='40' x2='85' y2='140' stroke='%230F0F0F' stroke-width='12' stroke-linecap='round'/%3E%3Cline x1='115' y1='40' x2='115' y2='140' stroke='%230F0F0F' stroke-width='12' stroke-linecap='round'/%3E%3Cline x1='35' y1='140' x2='140' y2='40' stroke='%230F0F0F' stroke-width='12' stroke-linecap='round'/%3E%3C/svg%3E">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://creatortally.app/">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0F0F0F;
+      --bg-secondary: #161616;
+      --card: #1A1A1A;
+      --card-elevated: #242424;
+      --text-primary: #FFFFFF;
+      --text-secondary: #8B8B8B;
+      --text-muted: #5A5A5A;
+      --accent-income: #3B82F6;
+      --accent-tax: #A855F7;
+      --accent-reinvest: #F97316;
+      --accent-savings: #EAB308;
+      --accent-takehome: #22C55E;
+      --border: #2A2A2A;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-pill: 24px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    ::selection {
+      background: var(--accent-takehome);
+      color: var(--bg);
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--card-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05);
+      animation: toastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-width: 280px;
+      max-width: 400px;
+      pointer-events: auto;
+    }
+
+    .toast.success {
+      border-color: rgba(34, 197, 94, 0.4);
+      background: linear-gradient(135deg, var(--card-elevated), rgba(34, 197, 94, 0.1));
+    }
+
+    .toast.success .toast-icon {
+      color: var(--accent-takehome);
+    }
+
+    .toast.error {
+      border-color: rgba(239, 68, 68, 0.4);
+      background: linear-gradient(135deg, var(--card-elevated), rgba(239, 68, 68, 0.1));
+    }
+
+    .toast.error .toast-icon {
+      color: #EF4444;
+    }
+
+    .toast.info {
+      border-color: rgba(59, 130, 246, 0.4);
+      background: linear-gradient(135deg, var(--card-elevated), rgba(59, 130, 246, 0.1));
+    }
+
+    .toast.info .toast-icon {
+      color: var(--accent-income);
+    }
+
+    .toast-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .toast-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .toast-message {
+      font-size: 0.875rem;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      margin-left: auto;
+      font-size: 18px;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .toast-close:hover {
+      opacity: 1;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(100%) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes toastOut {
+      from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(100%) scale(0.8);
+      }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* Loading Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, var(--card-elevated) 25%, var(--card) 50%, var(--card-elevated) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+      border-radius: var(--radius-sm);
+    }
+
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Cookie Consent Banner */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .cookie-banner.visible {
+      display: flex;
+    }
+
+    .cookie-banner p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .cookie-banner a {
+      color: var(--accent-takehome);
+      text-decoration: none;
+    }
+
+    .cookie-banner a:hover {
+      text-decoration: underline;
+    }
+
+    .cookie-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-takehome);
+      color: var(--bg);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--card);
+      color: var(--text-primary);
+    }
+
+    .btn-pro {
+      background: linear-gradient(135deg, #A855F7, #EC4899);
+      color: white;
+    }
+
+    .btn-pro:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(168, 85, 247, 0.4);
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.8rem;
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent-takehome), #16A34A);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-icon::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+      animation: logoShine 3s infinite;
+    }
+
+    @keyframes logoShine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    .logo-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--bg);
+    }
+
+    .logo h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    /* LANDING PAGE */
+    .landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .landing-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.875rem;
+      color: var(--accent-takehome);
+      margin-bottom: 24px;
+    }
+
+    .hero h2 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      max-width: 800px;
+      line-height: 1.1;
+    }
+
+    .hero h2 span {
+      color: var(--accent-takehome);
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cta-form {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .cta-input {
+      flex: 1;
+      padding: 16px 20px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .cta-input:focus {
+      border-color: var(--accent-takehome);
+    }
+
+    .cta-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .hero-note {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .features {
+      padding: 80px 0;
+      background: var(--bg-secondary);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero h2 {
+        font-size: 2.5rem;
+      }
+      .cta-form {
+        flex-direction: column;
+      }
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .pricing {
+      padding: 80px 0;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .pricing-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .pricing-header p {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 600px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pricing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent-takehome);
+      box-shadow: 0 0 40px rgba(34, 197, 94, 0.1);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      right: 24px;
+      background: var(--accent-takehome);
+      color: var(--bg);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .pricing-tier {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .pricing-card.featured .pricing-tier {
+      color: var(--accent-takehome);
+    }
+
+    .pricing-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pricing-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .pricing-price span {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .pricing-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 0.875rem;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--accent-takehome);
+      font-weight: 600;
+    }
+
+    .pricing-features li.locked {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    .pricing-features li.locked::before {
+      content: '🔒';
+      color: var(--text-muted);
+    }
+
+    .legal-nav {
+      padding: 48px 0;
+      background: var(--bg-secondary);
+    }
+
+    .legal-nav-grid {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .legal-nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+
+    .legal-nav a:hover {
+      color: var(--accent-takehome);
+    }
+
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--text-primary);
+    }
+
+    /* DASHBOARD */
+    .dashboard {
+      display: none;
+    }
+
+    .dashboard.active {
+      display: block;
+    }
+
+    .landing.hidden {
+      display: none;
+    }
+
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .user-email {
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tier-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .tier-badge.free {
+      background: rgba(139, 139, 139, 0.2);
+      color: var(--text-secondary);
+    }
+
+    .tier-badge.pro {
+      background: linear-gradient(135deg, #A855F7, #EC4899);
+      color: white;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .month-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .month-selector:hover {
+      background: var(--card-elevated);
+    }
+
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-takehome);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 12px 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-add:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-add:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-add svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Usage indicator */
+    .usage-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 24px;
+    }
+
+    .usage-text {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .usage-text strong {
+      color: var(--text-primary);
+    }
+
+    .usage-progress {
+      width: 120px;
+      height: 6px;
+      background: var(--card-elevated);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .usage-fill {
+      height: 100%;
+      background: var(--accent-takehome);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .usage-fill.warning {
+      background: #F97316;
+    }
+
+    .usage-fill.danger {
+      background: #EF4444;
+    }
+
+    .usage-cta {
+      font-size: 0.75rem;
+      color: var(--accent-takehome);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Month Comparison Stats */
+    .comparison-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 24px;
+      font-size: 0.875rem;
+      animation: slideInDown 0.4s ease-out;
+    }
+
+    .comparison-bar.new-record {
+      border-color: rgba(34, 197, 94, 0.5);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), transparent);
+    }
+
+    @keyframes slideInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .comparison-label {
+      color: var(--text-secondary);
+    }
+
+    .comparison-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+
+    .comparison-change {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .comparison-change.up {
+      color: var(--accent-takehome);
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .comparison-change.down {
+      color: #EF4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Snapshot */
+    .snapshot {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 768px) {
+      .snapshot {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .snapshot {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .snapshot-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .snapshot-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .snapshot-card.total { border-color: rgba(59, 130, 246, 0.3); }
+    .snapshot-card.tax { border-color: rgba(168, 85, 247, 0.3); }
+    .snapshot-card.reinvest { border-color: rgba(249, 115, 22, 0.3); }
+    .snapshot-card.takehome { border-color: rgba(34, 197, 94, 0.3); }
+
+    .snapshot-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .snapshot-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .snapshot-card.total .snapshot-dot { background: var(--accent-income); }
+    .snapshot-card.tax .snapshot-dot { background: var(--accent-tax); }
+    .snapshot-card.reinvest .snapshot-dot { background: var(--accent-reinvest); }
+    .snapshot-card.takehome .snapshot-dot { background: var(--accent-takehome); }
+
+    .snapshot-amount {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .snapshot-card.total .snapshot-amount { color: var(--accent-income); }
+    .snapshot-card.tax .snapshot-amount { color: var(--accent-tax); }
+    .snapshot-card.reinvest .snapshot-amount { color: var(--accent-reinvest); }
+    .snapshot-card.takehome .snapshot-amount { color: var(--accent-takehome); }
+
+    .snapshot-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Main Layout */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 32px;
+    }
+
+    @media (max-width: 900px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--card-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      background: var(--card);
+      color: var(--text-primary);
+    }
+
+    .btn-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Income List */
+    .income-list {
+      padding: 16px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .income-empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+
+    .income-empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .income-empty h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .income-empty p {
+      font-size: 0.875rem;
+      margin-bottom: 16px;
+    }
+
+    .income-empty .hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 12px;
+      background: var(--card-elevated);
+      border-radius: var(--radius-sm);
+      display: inline-block;
+    }
+
+    .income-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: var(--card-elevated);
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .income-item:hover {
+      background: #2A2A2A;
+    }
+
+    .income-item:last-child {
+      margin-bottom: 0;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .income-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-right: 16px;
+      flex-shrink: 0;
+    }
+
+    .income-icon.sponsorship { background: rgba(59, 130, 246, 0.15); }
+    .income-icon.platform { background: rgba(168, 85, 247, 0.15); }
+    .income-icon.membership { background: rgba(236, 72, 153, 0.15); }
+    .income-icon.affiliate { background: rgba(34, 197, 94, 0.15); }
+    .income-icon.course { background: rgba(249, 115, 22, 0.15); }
+    .income-icon.other { background: rgba(156, 163, 175, 0.15); }
+
+    .income-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .income-source {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .income-category {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .income-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .income-amount {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent-takehome);
+    }
+
+    .income-date {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .income-delete {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      margin-left: 12px;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+
+    .income-item:hover .income-delete {
+      opacity: 1;
+    }
+
+    .income-delete:hover {
+      color: #EF4444;
+    }
+
+    /* Rules Panel */
+    .rules-list {
+      padding: 24px;
+    }
+
+    .rule-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rule-item:last-child {
+      border-bottom: none;
+    }
+
+    .rule-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .rule-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .rule-item.tax .rule-dot { background: var(--accent-tax); }
+    .rule-item.reinvest .rule-dot { background: var(--accent-reinvest); }
+    .rule-item.savings .rule-dot { background: var(--accent-savings); }
+
+    .rule-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .rule-hint {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .rule-value {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rule-percent {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--card-elevated);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      min-width: 50px;
+      text-align: center;
+    }
+
+    .rule-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card-elevated);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .rule-btn:hover {
+      background: var(--card);
+      color: var(--text-primary);
+      border-color: var(--text-muted);
+    }
+
+    /* Pro Features Locked */
+    .pro-locked {
+      padding: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .pro-locked-card {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .pro-locked-card h4 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #A855F7, #EC4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .pro-locked-card p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .pro-locked-card .btn-pro {
+      width: 100%;
+      padding: 12px;
+      font-size: 0.8rem;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      padding: 24px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 480px;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .category-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 12px;
+      background: var(--card-elevated);
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .category-btn:hover {
+      background: #2A2A2A;
+    }
+
+    .category-btn.selected {
+      border-color: var(--accent-takehome);
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .category-btn-icon {
+      font-size: 24px;
+    }
+
+    .category-btn-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 16px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 16px 16px 16px 40px;
+      font-size: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      background: var(--card-elevated);
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-takehome);
+      background: #2A2A2A;
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-input-small {
+      font-size: 1rem;
+      padding: 12px 16px;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .modal-footer .btn {
+      flex: 1;
+      padding: 14px 20px;
+    }
+
+    .btn-secondary {
+      background: var(--card-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary:hover {
+      background: #2A2A2A;
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--accent-takehome);
+      border: none;
+      color: var(--bg);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Upgrade Modal */
+    .upgrade-modal .modal {
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .upgrade-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .upgrade-modal h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .upgrade-modal p {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 24px;
+    }
+
+    .upgrade-features {
+      text-align: left;
+      background: var(--card-elevated);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      margin-bottom: 24px;
+      list-style: none;
+    }
+
+    .upgrade-features li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 0.875rem;
+    }
+
+    .upgrade-features li::before {
+      content: '✓';
+      color: var(--accent-takehome);
+    }
+
+    .upgrade-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .upgrade-price span {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Tour / Tooltip */
+    .tour-tooltip {
+      position: fixed;
+      background: var(--card);
+      border: 1px solid var(--accent-takehome);
+      border-radius: var(--radius);
+      padding: 20px;
+      max-width: 300px;
+      z-index: 1001;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      display: none;
+    }
+
+    .tour-tooltip.active {
+      display: block;
+    }
+
+    .tour-tooltip h4 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--accent-takehome);
+    }
+
+    .tour-tooltip p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .tour-tooltip .tour-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .tour-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .tour-step-num {
+      width: 24px;
+      height: 24px;
+      background: var(--accent-takehome);
+      color: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--card);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Keyboard shortcuts hint */
+    .keyboard-hint {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .keyboard-hint kbd {
+      background: var(--card-elevated);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 24px 16px;
+      }
+
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .snapshot-amount {
+        font-size: 1.5rem;
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .keyboard-hint {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Cookie Consent Banner -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>We use cookies to improve your experience. By using Creator Tally, you agree to our <a href="/privacy">Privacy Policy</a>.</p>
+    <div class="cookie-actions">
+      <button class="btn btn-secondary btn-sm" onclick="declineCookies()">Decline</button>
+      <button class="btn btn-primary btn-sm" onclick="acceptCookies()">Accept</button>
+    </div>
+  </div>
+
+  <!-- LANDING PAGE -->
+  <div class="landing" id="landingPage">
+    <div class="container">
+      <nav class="landing-nav">
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.5 15.5v1c0 .83-.67 1.5-1.5 1.5h-1c-.83 0-1.5-.67-1.5-1.5v-1H7.5c-.83 0-1.5-.67-1.5-1.5v-1c0-.83.67-1.5 1.5-1.5H9v-1c0-.83.67-1.5 1.5-1.5h1c.83 0 1.5.67 1.5 1.5v1h1.5c.83 0 1.5.67 1.5 1.5v1c0 .83-.67 1.5-1.5 1.5h-1.5z" fill="currentColor"/>
+            </svg>
+          </div>
+          <h1>Creator Tally</h1>
+        </a>
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-secondary" onclick="showLoginModal()">Sign In</button>
+          <button class="btn btn-primary" onclick="showDashboard()">Get Started Free</button>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-badge">
+          <span>✨</span>
+          Built for creators making money online
+        </div>
+        <h2>Know <span>exactly</span> how much is yours</h2>
+        <p class="hero-subtitle">
+          Track sponsorships, platform payouts, affiliate income, and more — 
+          then instantly see what you can safely spend vs. what to save for taxes.
+        </p>
+        <div class="cta-group">
+          <form class="cta-form" id="signupForm" onsubmit="handleSignup(event)">
+            <input type="email" class="cta-input" id="landingEmail" placeholder="your@email.com" required>
+            <button type="submit" class="btn btn-primary">Start Free</button>
+          </form>
+          <p class="hero-note">Free forever plan available. No credit card required.</p>
+        </div>
+      </section>
+
+      <section class="features">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>4 Numbers, Instant Clarity</h3>
+            <p>See your total income, tax reserve, reinvest budget, and take-home pay at a glance.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤝</div>
+            <h3>All Income Sources</h3>
+            <p>Sponsorships, YouTube, Patreon, affiliate commissions — everything in one place.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🧮</div>
+            <h3>No Accounting Jargon</h3>
+            <p>Built for creators, not accountants. Just track your money and know what's yours.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing">
+        <div class="pricing-header">
+          <h2>Simple, Transparent Pricing</h2>
+          <p>Start free. Upgrade when you're ready.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="pricing-tier">Free</div>
+            <div class="pricing-name">Starter</div>
+            <div class="pricing-price">$0<span>/mo</span></div>
+            <p class="pricing-desc">Perfect for getting started with financial clarity</p>
+            <ul class="pricing-features">
+              <li>Track up to 20 entries/month</li>
+              <li>1 month history</li>
+              <li>Basic income categories</li>
+              <li>Tax & savings rules</li>
+              <li class="locked">Bank connection</li>
+              <li class="locked">Unlimited entries</li>
+              <li class="locked">Export to CSV/PDF</li>
+            </ul>
+            <button class="btn btn-secondary" onclick="showDashboard()">Get Started</button>
+          </div>
+          <div class="pricing-card featured">
+            <div class="pricing-badge">Most Popular</div>
+            <div class="pricing-tier">Pro</div>
+            <div class="pricing-name">Full Clarity</div>
+            <div class="pricing-price">$9<span>/mo</span></div>
+            <p class="pricing-desc">Everything you need to master your creator finances</p>
+            <ul class="pricing-features">
+              <li>Unlimited income entries</li>
+              <li>6 months history</li>
+              <li>All income categories</li>
+              <li>Tax & savings rules</li>
+              <li>Bank connection (auto-track)</li>
+              <li>Export to CSV/PDF</li>
+              <li>Quarterly tax reminders</li>
+            </ul>
+            <button class="btn btn-pro" onclick="openUpgradeModal()">Upgrade to Pro</button>
+          </div>
+        </div>
+      </section>
+
+      <nav class="legal-nav">
+        <div class="legal-nav-grid">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/cookies">Cookie Policy</a>
+        </div>
+      </nav>
+
+      <footer>
+        <p>© 2026 Creator Tally. Financial clarity for creators.</p>
+        <p style="margin-top: 8px; font-size: 0.75rem;">
+          <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/cookies">Cookies</a>
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard container" id="dashboardPage">
+    <div class="dashboard-header">
+      <div class="header-left">
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.5 15.5v1c0 .83-.67 1.5-1.5 1.5h-1c-.83 0-1.5-.67-1.5-1.5v-1H7.5c-.83 0-1.5-.67-1.5-1.5v-1c0-.83.67-1.5 1.5-1.5H9v-1c0-.83.67-1.5 1.5-1.5h1c.83 0 1.5.67 1.5 1.5v1h1.5c.83 0 1.5.67 1.5 1.5v1c0 .83-.67 1.5-1.5 1.5h-1.5z" fill="currentColor"/>
+            </svg>
+          </div>
+          <h1>Creator Tally</h1>
+        </a>
+        <div class="user-badge">
+          <span class="user-email" id="userEmail">you@example.com</span>
+          <span class="tier-badge free" id="tierBadge">Free</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="signOut()" style="margin-left: 8px;">Sign Out</button>
+      </div>
+      <div class="header-actions">
+        <button class="month-selector" id="monthSelector">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span id="currentMonth">January 2026</span>
+        </button>
+        <button class="btn-add" id="addIncomeBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Add Income
+        </button>
+      </div>
+    </div>
+
+    <div class="usage-bar" id="usageBar">
+      <span class="usage-text"><strong id="usageCount">0</strong>/20 entries this month</span>
+      <div class="usage-progress">
+        <div class="usage-fill" id="usageFill" style="width: 0%"></div>
+      </div>
+      <span class="usage-cta" id="usageCta" onclick="openUpgradeModal()">Upgrade for unlimited →</span>
+    </div>
+
+    <!-- Month Comparison -->
+    <div class="comparison-bar" id="comparisonBar" style="display: none;">
+      <span class="comparison-label">vs last month:</span>
+      <span class="comparison-value" id="lastMonthAmount">$0</span>
+      <span class="comparison-change" id="comparisonChange">
+        <span id="comparisonArrow">↑</span>
+        <span id="comparisonPercent">0%</span>
+      </span>
+    </div>
+
+    <div class="snapshot">
+      <div class="snapshot-card total">
+        <div class="snapshot-label">
+          <span class="snapshot-dot"></span>
+          Total Income
+        </div>
+        <div class="snapshot-amount" id="totalIncome">$0</div>
+        <div class="snapshot-sub" id="totalSub">0 entries this month</div>
+      </div>
+      <div class="snapshot-card tax">
+        <div class="snapshot-label">
+          <span class="snapshot-dot"></span>
+          Tax Reserve
+        </div>
+        <div class="snapshot-amount" id="taxReserve">$0</div>
+        <div class="snapshot-sub" id="taxSub">25% set aside for taxes</div>
+      </div>
+      <div class="snapshot-card reinvest">
+        <div class="snapshot-label">
+          <span class="snapshot-dot"></span>
+          Reinvest
+        </div>
+        <div class="snapshot-amount" id="reinvestAmount">$0</div>
+        <div class="snapshot-sub" id="reinvestSub">10% for business growth</div>
+      </div>
+      <div class="snapshot-card takehome">
+        <div class="snapshot-label">
+          <span class="snapshot-dot"></span>
+          Take-Home
+        </div>
+        <div class="snapshot-amount" id="takeHome">$0</div>
+        <div class="snapshot-sub" id="takeHomeSub">Safe to spend</div>
+      </div>
+    </div>
+
+    <div class="main-layout">
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Income This Month</h2>
+          <div class="section-actions">
+            <button class="btn-icon" onclick="exportCSV()" title="Export to CSV">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="income-list" id="incomeList">
+          <div class="income-empty">
+            <div class="income-empty-icon">💸</div>
+            <h3>No income logged yet</h3>
+            <p>Add your first income entry to see your financial picture</p>
+            <span class="hint">💡 Tip: Track every payment you receive — sponsorships, platform payouts, affiliate links, all of it.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Rules</h2>
+        </div>
+        <div class="rules-list">
+          <div class="rule-item tax">
+            <div class="rule-left">
+              <span class="rule-dot"></span>
+              <div>
+                <div class="rule-name">Tax Reserve</div>
+                <div class="rule-hint">Set aside for quarterly taxes</div>
+              </div>
+            </div>
+            <div class="rule-value">
+              <button class="rule-btn" onclick="adjustRule('tax', -1)">−</button>
+              <span class="rule-percent" id="taxPercent">25%</span>
+              <button class="rule-btn" onclick="adjustRule('tax', 1)">+</button>
+            </div>
+          </div>
+          <div class="rule-item reinvest">
+            <div class="rule-left">
+              <span class="rule-dot"></span>
+              <div>
+                <div class="rule-name">Business Reinvest</div>
+                <div class="rule-hint">Equipment, software, growth</div>
+              </div>
+            </div>
+            <div class="rule-value">
+              <button class="rule-btn" onclick="adjustRule('reinvest', -1)">−</button>
+              <span class="rule-percent" id="reinvestPercent">10%</span>
+              <button class="rule-btn" onclick="adjustRule('reinvest', 1)">+</button>
+            </div>
+          </div>
+          <div class="rule-item savings">
+            <div class="rule-left">
+              <span class="rule-dot"></span>
+              <div>
+                <div class="rule-name">Savings Buffer</div>
+                <div class="rule-hint">Emergency fund, slow months</div>
+              </div>
+            </div>
+            <div class="rule-value">
+              <button class="rule-btn" onclick="adjustRule('savings', -1)">−</button>
+              <span class="rule-percent" id="savingsPercent">20%</span>
+              <button class="rule-btn" onclick="adjustRule('savings', 1)">+</button>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 16px 24px; border-top: 1px solid var(--border);">
+          <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;">
+            <strong style="color: var(--text-secondary);">How it works:</strong> Tax + Reinvest + Savings = 55% saved. The remaining 45% is your take-home pay.
+          </p>
+        </div>
+
+        <!-- Pro Features -->
+        <div class="pro-locked" id="proFeatures">
+          <div class="pro-locked-card">
+            <h4>🔒 Pro Features</h4>
+            <p>Bank connection, unlimited entries, export & more</p>
+            <button class="btn btn-pro" onclick="openUpgradeModal()">Upgrade for $9/mo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="keyboard-hint">
+      Press <kbd>N</kbd> to add new income
+    </div>
+  </div>
+
+  <!-- Add Income Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Income</h3>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <div class="category-grid">
+            <button class="category-btn selected" data-category="sponsorship">
+              <span class="category-btn-icon">🤝</span>
+              <span class="category-btn-label">Sponsorship</span>
+            </button>
+            <button class="category-btn" data-category="platform">
+              <span class="category-btn-icon">📺</span>
+              <span class="category-btn-label">Platform</span>
+            </button>
+            <button class="category-btn" data-category="membership">
+              <span class="category-btn-icon">💜</span>
+              <span class="category-btn-label">Membership</span>
+            </button>
+            <button class="category-btn" data-category="affiliate">
+              <span class="category-btn-icon">🔗</span>
+              <span class="category-btn-label">Affiliate</span>
+            </button>
+            <button class="category-btn" data-category="course">
+              <span class="category-btn-icon">📚</span>
+              <span class="category-btn-label">Course</span>
+            </button>
+            <button class="category-btn" data-category="other">
+              <span class="category-btn-icon">✨</span>
+              <span class="category-btn-label">Other</span>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="amountInput">Amount</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">$</span>
+            <input type="text" id="amountInput" class="form-input" placeholder="0" inputmode="decimal" autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sourceInput">Source (optional)</label>
+          <input type="text" id="sourceInput" class="form-input form-input-small" placeholder="e.g. TechBrand Inc." autocomplete="off">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modalCancel">Cancel</button>
+        <button class="btn btn-primary" id="modalSave">Add Income</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Sign In</h3>
+        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" class="form-input form-input-small" placeholder="your@email.com" style="padding-left: 16px;">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" class="form-input form-input-small" placeholder="••••••••" style="padding-left: 16px;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeLoginModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="handleLogin()">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upgrade Modal -->
+  <div class="modal-overlay upgrade-modal" id="upgradeModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Upgrade to Pro</h3>
+        <button class="modal-close" onclick="closeUpgradeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="upgrade-icon">🚀</div>
+        <h3>Unlock Full Clarity</h3>
+        <p>Get everything you need to master your creator finances</p>
+        <ul class="upgrade-features">
+          <li>Unlimited income entries</li>
+          <li>6 months of history</li>
+          <li>Bank connection (auto-import)</li>
+          <li>Export to CSV & PDF</li>
+          <li>Quarterly tax reminders</li>
+          <li>Priority support</li>
+        </ul>
+        <div class="upgrade-price">$9<span>/month</span></div>
+        <button class="btn btn-pro" id="stripeCheckoutBtn" onclick="handleUpgrade()">
+          Subscribe Now — $9/mo
+        </button>
+        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 12px;">
+          Cancel anytime. No hidden fees.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tour Tooltip -->
+  <div class="tour-tooltip" id="tourTooltip">
+    <div class="tour-step">
+      <span class="tour-step-num">1</span>
+      <span>Add your income sources</span>
+    </div>
+    <p>This is your snapshot. Total income, tax reserve, reinvest, and what's yours to spend.</p>
+    <div class="tour-actions">
+      <button class="btn btn-secondary btn-sm" onclick="nextTourStep()">Next</button>
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    const FREE_ENTRY_LIMIT = 20;
+    
+    // Stripe Configuration - Replace with your actual keys from https://dashboard.stripe.com
+    // See .env.example for setup instructions
+    const STRIPE_PUBLISHABLE_KEY = 'pk_live_YOUR_STRIPE_KEY'; // or pk_test_ for development
+    
+    // Supabase Configuration - Replace with your values from https://supabase.com
+    // Initialize with: npx supabase init
+    // The below is loaded from environment variables in production
+    let SUPABASE_URL = 'YOUR_SUPABASE_URL';
+    let SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    let supabase = null;
+
+    // ============================================
+    // STATE
+    // ============================================
+    let user = null;
+    let rules = { tax: 25, reinvest: 10, savings: 20 };
+    let entries = [];
+    let currentMonth = new Date();
+    let selectedCategory = 'sponsorship';
+    let cookieConsent = localStorage.getItem('cookie_consent') === 'accepted';
+    let tourShown = localStorage.getItem('tour_shown') === 'true';
+
+    // ============================================
+    // TOAST NOTIFICATIONS
+    // ============================================
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icons = {
+        success: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
+        error: `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`,
+        info: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`
+      };
+      
+      toast.innerHTML = `
+        <span class="toast-icon">${icons[type]}</span>
+        <span class="toast-message">${message}</span>
+        <button class="toast-close" onclick="dismissToast(this)">&times;</button>
+      `;
+      
+      container.appendChild(toast);
+      
+      // Auto remove after 4 seconds
+      setTimeout(() => {
+        dismissToast(toast.querySelector('.toast-close'));
+      }, 4000);
+    }
+
+    function dismissToast(btn) {
+      const toast = btn.closest('.toast');
+      if (toast) {
+        toast.style.animation = 'toastOut 0.3s ease-out forwards';
+        setTimeout(() => toast.remove(), 300);
+      }
+    }
+
+    // ============================================
+    // COOKIE CONSENT
+    // ============================================
+    function showCookieBanner() {
+      if (!cookieConsent) {
+        document.getElementById('cookieBanner').classList.add('visible');
+      }
+    }
+
+    function acceptCookies() {
+      cookieConsent = true;
+      localStorage.setItem('cookie_consent', 'accepted');
+      document.getElementById('cookieBanner').classList.remove('visible');
+      showToast('Cookies accepted', 'info');
+    }
+
+    function declineCookies() {
+      localStorage.setItem('cookie_consent', 'declined');
+      document.getElementById('cookieBanner').classList.remove('visible');
+    }
+
+    // ============================================
+    // DATABASE INTEGRATION
+    // ============================================
+    // 
+    // TO ENABLE SUPABASE:
+    // 1. Create account at https://supabase.com
+    // 2. Create new project
+    // 3. Run this SQL in SQL Editor:
+    //    
+    //    CREATE TABLE entries (
+    //      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    //      user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    //      amount DECIMAL(10,2) NOT NULL,
+    //      category TEXT NOT NULL,
+    //      source TEXT,
+    //      month_key TEXT NOT NULL,
+    //      created_at TIMESTAMPTZ DEFAULT NOW()
+    //    );
+    //    
+    //    ALTER TABLE entries ENABLE ROW LEVEL SECURITY;
+    //    CREATE POLICY "Users manage own entries" ON entries 
+    //      FOR ALL USING (auth.uid() = user_id);
+    //
+    // 4. Update SUPABASE_URL and SUPABASE_ANON_KEY below
+    // 5. Uncomment the supabase init code in initDatabase()
+    
+    async function initDatabase() {
+      // Check if we have env vars (set via Netlify or .env)
+      if (typeof SUPABASE_URL !== 'undefined' && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+        try {
+          const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+          supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          
+          // Check for existing session
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            user = session.user;
+            await loadFromSupabase();
+            showDashboard();
+            return true;
+          }
+        } catch (e) {
+          console.log('Supabase not configured, using localStorage');
+        }
+      }
+      return false;
+    }
+
+    async function loadFromSupabase() {
+      if (!supabase || !user) return;
+      
+      const { data, error } = await supabase
+        .from('entries')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+      
+      if (!error && data) {
+        entries = data;
+      }
+      
+      // Load rules from user metadata
+      if (user.user_metadata?.rules) {
+        rules = user.user_metadata.rules;
+      }
+    }
+
+    async function saveToSupabase(entry) {
+      if (!supabase || !user) return { error: 'Not connected to Supabase' };
+      
+      const { data, error } = await supabase
+        .from('entries')
+        .insert([{ ...entry, user_id: user.id }])
+        .select()
+        .single();
+      
+      return { data, error };
+    }
+
+    async function deleteFromSupabase(id) {
+      if (!supabase || !user) return { error: 'Not connected to Supabase' };
+      
+      return await supabase
+        .from('entries')
+        .delete()
+        .eq('id', id);
+    }
+
+    // ============================================
+    // LOCAL STORAGE (Fallback)
+    // ============================================
+    function loadData() {
+      const savedUser = localStorage.getItem('creatortally_user');
+      if (savedUser) {
+        user = JSON.parse(savedUser);
+        rules = user.rules || rules;
+        entries = user.entries || [];
+      }
+    }
+
+    function saveData() {
+      if (user) {
+        localStorage.setItem('creatortally_user', JSON.stringify({
+          ...user,
+          rules,
+          entries
+        }));
+      }
+    }
+
+    // ============================================
+    // HELPERS
+    // ============================================
+    function formatCurrency(num) {
+      return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function getMonthKey(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function formatMonth(date) {
+      return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+
+    function getCurrentEntries() {
+      const key = getMonthKey(currentMonth);
+      return entries.filter(e => e.monthKey === key);
+    }
+
+    function getPreviousMonthEntries() {
+      const prev = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+      const key = getMonthKey(prev);
+      return entries.filter(e => e.monthKey === key);
+    }
+
+    function canAddEntry() {
+      if (user && user.tier === 'pro') return true;
+      return getCurrentEntries().length < FREE_ENTRY_LIMIT;
+    }
+
+    // ============================================
+    // UI UPDATES
+    // ============================================
+    function updateDisplay() {
+      const monthEntries = getCurrentEntries();
+      const prevEntries = getPreviousMonthEntries();
+      
+      const total = monthEntries.reduce((sum, e) => sum + e.amount, 0);
+      const prevTotal = prevEntries.reduce((sum, e) => sum + e.amount, 0);
+      
+      const taxAmount = Math.round(total * (rules.tax / 100));
+      const reinvestAmount = Math.round(total * (rules.reinvest / 100));
+      const savingsAmount = Math.round(total * (rules.savings / 100));
+      const takeHomeAmount = total - taxAmount - reinvestAmount - savingsAmount;
+
+      // User info
+      document.getElementById('userEmail').textContent = user ? user.email : 'guest';
+      const tierBadge = document.getElementById('tierBadge');
+      if (user && user.tier === 'pro') {
+        tierBadge.textContent = 'Pro';
+        tierBadge.className = 'tier-badge pro';
+      } else {
+        tierBadge.textContent = 'Free';
+        tierBadge.className = 'tier-badge free';
+      }
+
+      // Snapshot
+      document.getElementById('totalIncome').textContent = formatCurrency(total);
+      document.getElementById('taxReserve').textContent = formatCurrency(taxAmount);
+      document.getElementById('reinvestAmount').textContent = formatCurrency(reinvestAmount);
+      document.getElementById('takeHome').textContent = formatCurrency(takeHomeAmount);
+
+      // Subs
+      document.getElementById('totalSub').textContent = `${monthEntries.length} ${monthEntries.length === 1 ? 'entry' : 'entries'} this month`;
+      document.getElementById('taxSub').textContent = `${rules.tax}% set aside for taxes`;
+      document.getElementById('reinvestSub').textContent = `${rules.reinvest}% for business growth`;
+      document.getElementById('takeHomeSub').textContent = 'Safe to spend';
+
+      // Month
+      document.getElementById('currentMonth').textContent = formatMonth(currentMonth);
+
+      // Month comparison
+      const comparisonBar = document.getElementById('comparisonBar');
+      if (entries.length > 0 && prevTotal > 0) {
+        comparisonBar.style.display = 'flex';
+        document.getElementById('lastMonthAmount').textContent = formatCurrency(prevTotal);
+        
+        const change = ((total - prevTotal) / prevTotal) * 100;
+        const comparisonChange = document.getElementById('comparisonChange');
+        const arrow = document.getElementById('comparisonArrow');
+        const percent = document.getElementById('comparisonPercent');
+        
+        percent.textContent = Math.abs(change).toFixed(0) + '%';
+        
+        if (change >= 0) {
+          comparisonChange.className = 'comparison-change up';
+          arrow.textContent = '↑';
+        } else {
+          comparisonChange.className = 'comparison-change down';
+          arrow.textContent = '↓';
+        }
+      } else {
+        comparisonBar.style.display = 'none';
+      }
+
+      // Usage bar
+      const entryCount = monthEntries.length;
+      document.getElementById('usageCount').textContent = entryCount;
+      
+      const fillPercent = user && user.tier === 'pro' ? 0 : (entryCount / FREE_ENTRY_LIMIT) * 100;
+      const usageFill = document.getElementById('usageFill');
+      const usageCta = document.getElementById('usageCta');
+      const addBtn = document.getElementById('addIncomeBtn');
+
+      usageFill.style.width = `${fillPercent}%`;
+      
+      if (user && user.tier === 'pro') {
+        usageFill.className = 'usage-fill';
+        usageCta.style.display = 'none';
+        addBtn.disabled = false;
+      } else {
+        if (fillPercent >= 100) {
+          usageFill.className = 'usage-fill danger';
+          usageCta.style.display = 'inline';
+          addBtn.disabled = true;
+        } else if (fillPercent >= 80) {
+          usageFill.className = 'usage-fill warning';
+          usageCta.style.display = 'none';
+          addBtn.disabled = false;
+        } else {
+          usageFill.className = 'usage-fill';
+          usageCta.style.display = 'none';
+          addBtn.disabled = false;
+        }
+      }
+
+      // Rules
+      document.getElementById('taxPercent').textContent = `${rules.tax}%`;
+      document.getElementById('reinvestPercent').textContent = `${rules.reinvest}%`;
+      document.getElementById('savingsPercent').textContent = `${rules.savings}%`;
+
+      // Income list
+      const listEl = document.getElementById('incomeList');
+      
+      if (monthEntries.length === 0) {
+        listEl.innerHTML = `
+          <div class="income-empty">
+            <div class="income-empty-icon">💸</div>
+            <h3>No income logged yet</h3>
+            <p>Add your first income entry to see your financial picture</p>
+            <span class="hint">💡 Tip: Track every payment you receive — sponsorships, platform payouts, affiliate links, all of it.</span>
+          </div>
+        `;
+      } else {
+        listEl.innerHTML = monthEntries
+          .sort((a, b) => b.createdAt - a.createdAt)
+          .map(entry => `
+            <div class="income-item">
+              <div class="income-icon ${entry.category}">
+                ${getCategoryIcon(entry.category)}
+              </div>
+              <div class="income-details">
+                <div class="income-source">${entry.source || getCategoryLabel(entry.category)}</div>
+                <div class="income-category">${getCategoryLabel(entry.category)}</div>
+              </div>
+              <div class="income-right">
+                <div class="income-amount">${formatCurrency(entry.amount)}</div>
+                <div class="income-date">${new Date(entry.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+              </div>
+              <button class="income-delete" onclick="deleteEntry('${entry.id}')" aria-label="Delete entry">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
+          `).join('');
+      }
+    }
+
+    // ============================================
+    // CATEGORY HELPERS
+    // ============================================
+    function getCategoryIcon(category) {
+      const icons = {
+        sponsorship: '🤝',
+        platform: '📺',
+        membership: '💜',
+        affiliate: '🔗',
+        course: '📚',
+        other: '✨'
+      };
+      return icons[category] || '✨';
+    }
+
+    function getCategoryLabel(category) {
+      const labels = {
+        sponsorship: 'Sponsorship',
+        platform: 'Platform Payout',
+        membership: 'Membership',
+        affiliate: 'Affiliate',
+        course: 'Course/Digital',
+        other: 'Other'
+      };
+      return labels[category] || 'Other';
+    }
+
+    // ============================================
+    // INCOME MANAGEMENT
+    // ============================================
+    async function addIncome(amount, source, category) {
+      if (!canAddEntry()) {
+        openUpgradeModal();
+        return;
+      }
+      
+      const entry = {
+        id: Date.now().toString(),
+        amount,
+        source: source || '',
+        category,
+        monthKey: getMonthKey(currentMonth),
+        createdAt: Date.now()
+      };
+      
+      // Try Supabase first, fall back to localStorage
+      if (supabase && user) {
+        const result = await saveToSupabase(entry);
+        if (!result.error) {
+          entries.unshift(result.data);
+          showToast(`Added ${formatCurrency(amount)} income`, 'success');
+        } else {
+          showToast('Failed to save. Using local storage.', 'error');
+          entries.push(entry);
+          saveData();
+        }
+      } else {
+        entries.push(entry);
+        saveData();
+      }
+      
+      updateDisplay();
+    }
+
+    async function deleteEntry(id) {
+      // Try Supabase first
+      if (supabase && user) {
+        await deleteFromSupabase(id);
+      }
+      
+      entries = entries.filter(e => e.id !== id);
+      
+      if (!supabase) {
+        saveData();
+      }
+      
+      updateDisplay();
+      showToast('Entry deleted', 'info');
+    }
+
+    function exportCSV() {
+      const monthEntries = getCurrentEntries();
+      if (monthEntries.length === 0) {
+        showToast('No entries to export', 'error');
+        return;
+      }
+
+      const headers = ['Date', 'Category', 'Source', 'Amount'];
+      const rows = monthEntries.map(e => [
+        new Date(e.createdAt).toLocaleDateString(),
+        getCategoryLabel(e.category),
+        e.source || '-',
+        e.amount
+      ]);
+
+      const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `creatortally-${getMonthKey(currentMonth)}.csv`;
+      a.click();
+      
+      URL.revokeObjectURL(url);
+      showToast('CSV exported successfully', 'success');
+    }
+
+    // ============================================
+    // RULES
+    // ============================================
+    function adjustRule(type, delta) {
+      const newValue = rules[type] + delta;
+      if (newValue >= 0 && newValue <= 100) {
+        rules[type] = newValue;
+        saveData();
+        updateDisplay();
+      }
+    }
+
+    // ============================================
+    // MODALS
+    // ============================================
+    const modal = document.getElementById('modalOverlay');
+
+    function openModal() {
+      if (!canAddEntry()) {
+        openUpgradeModal();
+        return;
+      }
+      modal.classList.add('active');
+      document.getElementById('amountInput').value = '';
+      document.getElementById('sourceInput').value = '';
+      document.getElementById('amountInput').focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    document.getElementById('addIncomeBtn').addEventListener('click', openModal);
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalCancel').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Category selection
+    document.querySelectorAll('.category-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedCategory = btn.dataset.category;
+      });
+    });
+
+    // Amount formatting
+    const amountInput = document.getElementById('amountInput');
+    amountInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/[^0-9.]/g, '');
+      const parts = value.split('.');
+      if (parts.length > 2) {
+        value = parts[0] + '.' + parts.slice(1).join('');
+      }
+      e.target.value = value;
+    });
+
+    // Save income
+    document.getElementById('modalSave').addEventListener('click', () => {
+      const amount = parseFloat(amountInput.value);
+      if (!amount || amount <= 0) {
+        amountInput.focus();
+        return;
+      }
+      addIncome(amount, document.getElementById('sourceInput').value.trim(), selectedCategory);
+      closeModal();
+    });
+
+    // Enter to save
+    amountInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('modalSave').click();
+    });
+    document.getElementById('sourceInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('modalSave').click();
+    });
+
+    // Month navigation
+    document.getElementById('monthSelector').addEventListener('click', () => {
+      const input = prompt('Enter month (YYYY-MM):', getMonthKey(currentMonth));
+      if (input) {
+        const [year, month] = input.split('-');
+        if (year && month) {
+          currentMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
+          updateDisplay();
+        }
+      }
+    });
+
+    // ============================================
+    // AUTHENTICATION
+    // ============================================
+    async function handleSignup(e) {
+      e.preventDefault();
+      const email = document.getElementById('landingEmail').value;
+      
+      if (supabase) {
+        // Supabase signup
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          options: {
+            data: { tier: 'free' }
+          }
+        });
+        
+        if (error) {
+          showToast('Signup failed: ' + error.message, 'error');
+          return;
+        }
+        
+        user = data.user;
+      } else {
+        // LocalStorage fallback
+        user = {
+          email,
+          tier: 'free',
+          createdAt: Date.now()
+        };
+        saveData();
+      }
+      
+      showToast('Account created! Welcome to Creator Tally.', 'success');
+      
+      document.getElementById('landingPage').classList.add('hidden');
+      document.getElementById('dashboardPage').classList.add('active');
+      updateDisplay();
+      
+      // Show tour for first-time users
+      if (!tourShown) {
+        setTimeout(showTour, 1000);
+      }
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (supabase) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+        
+        if (error) {
+          showToast('Login failed: ' + error.message, 'error');
+          return;
+        }
+        
+        user = data.user;
+        await loadFromSupabase();
+        closeLoginModal();
+        showDashboard();
+        showToast('Welcome back!', 'success');
+      } else {
+        showToast('Login requires Supabase setup. Using local mode.', 'info');
+        closeLoginModal();
+      }
+    }
+
+    async function signOut() {
+      if (supabase) {
+        await supabase.auth.signOut();
+      }
+      
+      user = null;
+      entries = [];
+      localStorage.removeItem('creatortally_user');
+      document.getElementById('landingPage').classList.remove('hidden');
+      document.getElementById('dashboardPage').classList.remove('active');
+      showToast('Signed out successfully', 'info');
+    }
+
+    function showDashboard() {
+      document.getElementById('landingPage').classList.add('hidden');
+      document.getElementById('dashboardPage').classList.add('active');
+      updateDisplay();
+      
+      // Show tour for first-time users
+      if (!tourShown && user) {
+        setTimeout(showTour, 500);
+      }
+    }
+
+    function showLoginModal() {
+      document.getElementById('loginModal').classList.add('active');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('active');
+    }
+
+    // ============================================
+    // UPGRADE / STRIPE
+    // ============================================
+    function openUpgradeModal() {
+      document.getElementById('upgradeModal').classList.add('active');
+    }
+
+    function closeUpgradeModal() {
+      document.getElementById('upgradeModal').classList.remove('active');
+    }
+
+    async function handleUpgrade() {
+      if (!user) {
+        showToast('Please sign up first', 'error');
+        return;
+      }
+
+      // Load Stripe.js dynamically
+      const script = document.createElement('script');
+      script.src = 'https://js.stripe.com/v3/';
+      script.onload = async () => {
+        const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+        
+        try {
+          // In production, create a checkout session on your server
+          // For MVP demo, we'll simulate the upgrade
+          // 
+          // REAL IMPLEMENTATION:
+          // 1. Create an API endpoint (Netlify Functions, Supabase Edge Functions, etc.)
+          // 2. Call your API to create a Stripe Checkout session
+          // 3. Redirect to Stripe Checkout
+          //
+          // Example API call:
+          // const response = await fetch('/.netlify/functions/create-checkout', {
+          //   method: 'POST',
+          //   headers: { 'Content-Type': 'application/json' },
+          //   body: JSON.stringify({ email: user.email })
+          // });
+          // const { sessionId } = await response.json();
+          // await stripe.redirectToCheckout({ sessionId });
+
+          // For demo: simulate successful upgrade
+          user.tier = 'pro';
+          
+          // Save to Supabase if connected
+          if (supabase) {
+            await supabase.auth.updateUser({ data: { tier: 'pro' } });
+          } else {
+            saveData();
+          }
+          
+          closeUpgradeModal();
+          updateDisplay();
+          showToast('🎉 Welcome to Pro! You now have unlimited entries.', 'success');
+          
+        } catch (error) {
+          showToast('Payment failed. Please try again.', 'error');
+          console.error('Stripe error:', error);
+        }
+      };
+      
+      script.onerror = () => {
+        showToast('Payment system unavailable. Contact support.', 'error');
+      };
+      
+      document.head.appendChild(script);
+    }
+
+    // Stripe webhook handler (for production)
+    // Add this to your server-side code to handle subscription updates
+    /*
+    app.post('/webhook/stripe', async (req, res) => {
+      const sig = req.headers['stripe-signature'];
+      const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+      
+      try {
+        const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+        
+        if (event.type === 'checkout.session.completed') {
+          const session = event.data.object;
+          const email = session.customer_email;
+          // Update user to Pro tier in your database
+        }
+        
+        res.json({ received: true });
+      } catch (err) {
+        res.status(400).send(`Webhook Error: ${err.message}`);
+      }
+    });
+    */
+
+    // ============================================
+    // TOUR
+    // ============================================
+    let tourStep = 0;
+
+    function showTour() {
+      const tooltip = document.getElementById('tourTooltip');
+      tooltip.classList.add('active');
+      tooltip.style.top = '200px';
+      tooltip.style.left = '50%';
+      tooltip.style.transform = 'translateX(-50%)';
+    }
+
+    function nextTourStep() {
+      tourStep++;
+      const tooltip = document.getElementById('tourTooltip');
+      
+      if (tourStep >= 2) {
+        tooltip.classList.remove('active');
+        localStorage.setItem('tour_shown', 'true');
+        tourShown = true;
+        showToast('You\'re all set! Start tracking your income.', 'success');
+      } else {
+        tooltip.querySelector('p').textContent = 'Click "Add Income" to log your first payment — sponsorship, platform payout, anything.';
+        tooltip.querySelector('.tour-actions').innerHTML = `
+          <button class="btn btn-primary btn-sm" onclick="closeTour()">Got it!</button>
+        `;
+      }
+    }
+
+    function closeTour() {
+      document.getElementById('tourTooltip').classList.remove('active');
+      localStorage.setItem('tour_shown', 'true');
+      tourShown = true;
+    }
+
+    // ============================================
+    // KEYBOARD SHORTCUTS
+    // ============================================
+    document.addEventListener('keydown', (e) => {
+      // Only when not in an input
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      
+      if (e.key === 'n' || e.key === 'N') {
+        const dashboard = document.getElementById('dashboardPage');
+        if (dashboard.classList.contains('active')) {
+          openModal();
+        }
+      }
+      
+      if (e.key === 'Escape') {
+        closeModal();
+        closeUpgradeModal();
+        closeLoginModal();
+      }
+    });
+
+    // ============================================
+    // INITIALIZE
+    // ============================================
+    async function init() {
+      loadData();
+      showCookieBanner();
+      
+      // Try to initialize Supabase
+      const connected = await initDatabase();
+      
+      if (connected) {
+        showToast('Connected to cloud storage', 'info');
+      } else {
+        // Using localStorage fallback
+        if (user) {
+          document.getElementById('landingPage').classList.add('hidden');
+          document.getElementById('dashboardPage').classList.add('active');
+          updateDisplay();
+        }
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
