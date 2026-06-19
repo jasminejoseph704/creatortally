@@ -37,14 +37,14 @@ exports.handler = async (event) => {
 
       if (email) {
         // Find the user in Supabase by email using the admin API
-        const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+        const { data: { users }, error: listError } = await supabase.auth.admin.getUserByEmail(email);
 
         if (listError) {
-          console.error('Error listing users:', listError.message);
+          console.error('Error finding user:', listError.message);
           throw listError;
         }
 
-        const user = users.find(u => u.email === email);
+        const user = users && users.length > 0 ? users[0] : null;
 
         if (user) {
           // Update user to Pro tier in their metadata

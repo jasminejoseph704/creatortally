@@ -2331,6 +2331,20 @@
           const { data: { session } } = await supabase.auth.getSession();
           if (session) {
             user = session.user;
+
+            // Check for successful Stripe checkout redirect
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'true') {
+              // Refresh session to get updated metadata
+              const { data: { session: refreshedSession } } = await supabase.auth.getSession();
+              if (refreshedSession) {
+                user = refreshedSession.user;
+                showToast('🎉 Welcome to Pro! Your subscription is active.', 'success');
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+              }
+            }
+
             await loadFromSupabase();
             showDashboard();
             return true;
@@ -2436,7 +2450,7 @@
     }
 
     function canAddEntry() {
-      if (user && user.tier === 'pro') return true;
+      if (user && user.user_metadata?.tier === 'pro') return true;
       return getCurrentEntries().length < FREE_ENTRY_LIMIT;
     }
 
@@ -2458,7 +2472,7 @@
       // User info
       document.getElementById('userEmail').textContent = user ? (user.full_name || user.email) : 'guest';
       const tierBadge = document.getElementById('tierBadge');
-      if (user && user.tier === 'pro') {
+      if (user && user.user_metadata?.tier === 'pro') {
         tierBadge.textContent = 'Pro';
         tierBadge.className = 'tier-badge pro';
       } else {
@@ -2509,14 +2523,14 @@
       const entryCount = monthEntries.length;
       document.getElementById('usageCount').textContent = entryCount;
       
-      const fillPercent = user && user.tier === 'pro' ? 0 : (entryCount / FREE_ENTRY_LIMIT) * 100;
+      const fillPercent = user && user.user_metadata?.tier === 'pro' ? 0 : (entryCount / FREE_ENTRY_LIMIT) * 100;
       const usageFill = document.getElementById('usageFill');
       const usageCta = document.getElementById('usageCta');
       const addBtn = document.getElementById('addIncomeBtn');
 
       usageFill.style.width = `${fillPercent}%`;
       
-      if (user && user.tier === 'pro') {
+      if (user && user.user_metadata?.tier === 'pro') {
         usageFill.className = 'usage-fill';
         usageCta.style.display = 'none';
         addBtn.disabled = false;
@@ -2971,37 +2985,36 @@
     }
 
     async function handleUpgrade() {
-      if (!user) {
+      if (!user || !user.email) {
         showToast('Please sign up first', 'error');
         return;
       }
 
-      const script = document.createElement('script');
-      script.src = 'https://js.stripe.com/v3/';
-      script.onload = async () => {
-        const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+      try {
+        const response = await fetch('/.netlify/functions/create-checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: user.email }),
+        });
 
-        try {
-          user.tier = 'pro';
-          if (supabase) {
-            await supabase.auth.updateUser({ data: { tier: 'pro' } });
-          } else {
-            saveData();
-          }
-          closeUpgradeModal();
-          updateDisplay();
-          showToast('🎉 Welcome to Pro! You now have unlimited entries.', 'success');
-        } catch (error) {
-          showToast('Payment failed. Please try again.', 'error');
-          console.error('Stripe error:', error);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to create checkout session');
         }
-      };
 
-      script.onerror = () => {
-        showToast('Payment system unavailable. Contact support.', 'error');
-      };
-
-      document.head.appendChild(script);
+        const { url } = await response.json();
+        if (url) {
+          closeUpgradeModal();
+          window.location.href = url;
+        } else {
+          throw new Error('No checkout URL received');
+        }
+      } catch (error) {
+        showToast('Error starting checkout. Please try again.', 'error');
+        console.error('Stripe checkout error:', error);
+      }
     }
 
     // Stripe webhook handler (for production)
