@@ -692,7 +692,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      min-height: 300px;
+      height: 400px;
     }
 
     .analytics-label {
@@ -2037,6 +2037,19 @@
               <button class="rule-btn" onclick="adjustRule('tax', 1)">+</button>
             </div>
           </div>
+          <div class="rule-item">
+            <div class="rule-left">
+              <span class="rule-dot" style="background: var(--accent-tax);"></span>
+              <div>
+                <div class="rule-name">State of Residence</div>
+                <div class="rule-hint">Affects tax reserve</div>
+              </div>
+            </div>
+            <div class="rule-value">
+              <select id="stateSelector" class="form-input form-input-small" style="padding: 4px 8px; font-size: 0.875rem; background: var(--card-elevated); color: var(--text-primary); border: 1px solid var(--border); border-radius: var(--radius-sm);" onchange="updateState(this.value)">
+              </select>
+            </div>
+          </div>
           <div class="rule-item reinvest">
             <div class="rule-left">
               <span class="rule-dot"></span>
@@ -2283,7 +2296,10 @@
     // STATE
     // ============================================
     let user = null;
-    let rules = { tax: 25, reinvest: 10, savings: 20 };
+    const STATE_TAX_RATES = {
+      'AL': 5, 'AK': 0, 'AZ': 2.5, 'AR': 4.4, 'CA': 9.3, 'CO': 4.4, 'CT': 5.5, 'DE': 6.6, 'FL': 0, 'GA': 5.49, 'HI': 11, 'ID': 5.8, 'IL': 4.95, 'IN': 3.23, 'IA': 5.6, 'KS': 5.7, 'KY': 4, 'LA': 4.25, 'ME': 7.15, 'MD': 5.75, 'MA': 5, 'MI': 4.25, 'MN': 9.85, 'MS': 5, 'MO': 4.8, 'MT': 6.72, 'NE': 5.84, 'NV': 0, 'NH': 0, 'NJ': 6.37, 'NM': 5.9, 'NY': 6.85, 'NC': 4.5, 'ND': 2.9, 'OH': 3.99, 'OK': 4.75, 'OR': 9, 'PA': 3.07, 'RI': 5.99, 'SC': 7, 'SD': 5.5, 'TN': 0, 'TX': 0, 'UT': 4.65, 'VT': 8.75, 'VA': 5.75, 'WA': 0, 'WV': 5.6, 'WI': 5.3, 'WY': 0
+    };
+    let rules = { tax: 25, reinvest: 10, savings: 20, state: 'NC', userTaxRate: 25 };
     let entries = [];
     let currentMonth = new Date();
     let selectedCategory = 'sponsorship';
@@ -2589,7 +2605,11 @@
               grid: { color: '#2A2A2A' }
             },
             x: {
-              ticks: { color: '#8B8B8B' },
+              ticks: {
+                color: '#8B8B8B',
+                align: 'center',
+                padding: 10
+              },
               grid: { display: false }
             }
           }
@@ -2648,9 +2668,13 @@
       if (user && user.user_metadata?.tier === 'pro') {
         tierBadge.textContent = 'Pro';
         tierBadge.className = 'tier-badge pro';
+        document.getElementById('usageBar').style.display = 'none';
+        document.getElementById('proFeatures').style.display = 'none';
       } else {
         tierBadge.textContent = 'Free';
         tierBadge.className = 'tier-badge free';
+        document.getElementById('usageBar').style.display = 'flex';
+        document.getElementById('proFeatures').style.display = 'block';
       }
 
       // Snapshot
@@ -2883,8 +2907,104 @@
       const newValue = rules[type] + delta;
       if (newValue >= 0 && newValue <= 100) {
         rules[type] = newValue;
+        if (type === 'tax') rules.userTaxRate = newValue;
         saveData();
         updateDisplay();
+      }
+    }
+
+    function updateState(stateCode) {
+      rules.state = stateCode;
+      const stateRate = STATE_TAX_RATES[stateCode] || 0;
+      rules.tax = 25 + stateRate;
+      rules.userTaxRate = rules.tax;
+      saveData();
+      updateDisplay();
+    }
+
+    function populateStateSelector() {
+      const selector = document.getElementById('stateSelector');
+      if (!selector) return;
+
+      const states = [
+        { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' }, { code: 'AZ', name: 'Arizona' },
+        { code: 'AR', name: 'Arkansas' }, { code: 'CA', name: 'California' }, { code: 'CO', name: 'Colorado' },
+        { code: 'CT', name: 'Connecticut' }, { code: 'DE', name: 'Delaware' }, { code: 'FL', name: 'Florida' },
+        { code: 'GA', name: 'Georgia' }, { code: 'HI', name: 'Hawaii' }, { code: 'ID', name: 'Idaho' },
+        { code: 'IL', name: 'Illinois' }, { code: 'IN', name: 'Indiana' }, { code: 'IA', name: 'Iowa' },
+        { code: 'KS', name: 'Kansas' }, { code: 'KY', name: 'Kentucky' }, { code: 'LA', name: 'Louisiana' },
+        { code: 'ME', name: 'Maine' }, { code: 'MD', name: 'Maryland' }, { code: 'MA', name: 'Massachusetts' },
+        { code: 'MI', name: 'Michigan' }, { code: 'MN', name: 'Minnesota' }, { code: 'MS', name: 'Mississippi' },
+        { code: 'MO', name: 'Missouri' }, { code: 'MT', name: 'Montana' }, { code: 'NE', name: 'Nebraska' },
+        { code: 'NV', name: 'Nevada' }, { code: 'NH', name: 'New Hampshire' }, { code: 'NJ', name: 'New Jersey' },
+        { code: 'NM', name: 'New Mexico' }, { code: 'NY', name: 'New York' }, { code: 'NC', name: 'North Carolina' },
+        { code: 'ND', name: 'North Dakota' }, { code: 'OH', name: 'Ohio' }, { code: 'OK', name: 'Oklahoma' },
+        { code: 'OR', name: 'Oregon' }, { code: 'PA', name: 'Pennsylvania' }, { code: 'RI', name: 'Rhode Island' },
+        { code: 'SC', name: 'South Carolina' }, { code: 'SD', name: 'South Dakota' }, { code: 'TN', name: 'Tennessee' },
+        { code: 'TX', name: 'Texas' }, { code: 'UT', name: 'Utah' }, { code: 'VT', name: 'Vermont' },
+        { code: 'VA', name: 'Virginia' }, { code: 'WA', name: 'Washington' }, { code: 'WV', name: 'West Virginia' },
+        { code: 'WI', name: 'Wisconsin' }, { code: 'WY', name: 'Wyoming' }
+      ];
+
+      states.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state.code;
+        option.textContent = `${state.name} (${state.code})`;
+        selector.appendChild(option);
+      });
+
+      if (rules.state) {
+        selector.value = rules.state;
+      } else {
+        selector.value = 'NC';
+        rules.state = 'NC';
+      }
+    }
+
+    function updateState(stateCode) {
+      rules.state = stateCode;
+      const stateRate = STATE_TAX_RATES[stateCode] || 0;
+      rules.tax = 25 + stateRate;
+      saveData();
+      updateDisplay();
+    }
+
+    function populateStateSelector() {
+      const selector = document.getElementById('stateSelector');
+      if (!selector) return;
+
+      const states = [
+        { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' }, { code: 'AZ', name: 'Arizona' },
+        { code: 'AR', name: 'Arkansas' }, { code: 'CA', name: 'California' }, { code: 'CO', name: 'Colorado' },
+        { code: 'CT', name: 'Connecticut' }, { code: 'DE', name: 'Delaware' }, { code: 'FL', name: 'Florida' },
+        { code: 'GA', name: 'Georgia' }, { code: 'HI', name: 'Hawaii' }, { code: 'ID', name: 'Idaho' },
+        { code: 'IL', name: 'Illinois' }, { code: 'IN', name: 'Indiana' }, { code: 'IA', name: 'Iowa' },
+        { code: 'KS', name: 'Kansas' }, { code: 'KY', name: 'Kentucky' }, { code: 'LA', name: 'Louisiana' },
+        { code: 'ME', name: 'Maine' }, { code: 'MD', name: 'Maryland' }, { code: 'MA', name: 'Massachusetts' },
+        { code: 'MI', name: 'Michigan' }, { code: 'MN', name: 'Minnesota' }, { code: 'MS', name: 'Mississippi' },
+        { code: 'MO', name: 'Missouri' }, { code: 'MT', name: 'Montana' }, { code: 'NE', name: 'Nebraska' },
+        { code: 'NV', name: 'Nevada' }, { code: 'NH', name: 'New Hampshire' }, { code: 'NJ', name: 'New Jersey' },
+        { code: 'NM', name: 'New Mexico' }, { code: 'NY', name: 'New York' }, { code: 'NC', name: 'North Carolina' },
+        { code: 'ND', name: 'North Dakota' }, { code: 'OH', name: 'Ohio' }, { code: 'OK', name: 'Oklahoma' },
+        { code: 'OR', name: 'Oregon' }, { code: 'PA', name: 'Pennsylvania' }, { code: 'RI', name: 'Rhode Island' },
+        { code: 'SC', name: 'South Carolina' }, { code: 'SD', name: 'South Dakota' }, { code: 'TN', name: 'Tennessee' },
+        { code: 'TX', name: 'Texas' }, { code: 'UT', name: 'Utah' }, { code: 'VT', name: 'Vermont' },
+        { code: 'VA', name: 'Virginia' }, { code: 'WA', name: 'Washington' }, { code: 'WV', name: 'West Virginia' },
+        { code: 'WI', name: 'Wisconsin' }, { code: 'WY', name: 'Wyoming' }
+      ];
+
+      states.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state.code;
+        option.textContent = `${state.name} (${state.code})`;
+        selector.appendChild(option);
+      });
+
+      if (rules.state) {
+        selector.value = rules.state;
+      } else {
+        selector.value = 'NC';
+        rules.state = 'NC';
       }
     }
 
@@ -3291,6 +3411,7 @@
           updateDisplay();
         }
       }
+      populateStateSelector();
     }
 
     init();
