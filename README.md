@@ -155,7 +155,7 @@ USING (auth.uid() = user_id);
 | Tier | Price | Features |
 |------|-------|----------|
 | **Free** | $0/mo | 20 entries/month, 1 month history |
-| **Pro** | $9/mo | Unlimited entries, 6 months history, bank connection, export, tax reminders |
+| **Pro** | $9/mo | Unlimited entries, Advanced Financial Analytics (Trends & Source Mix), bank connection, export, tax reminders |
 
 ## 🤝 Contributing
 

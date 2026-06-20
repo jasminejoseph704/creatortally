@@ -37,7 +37,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <style>
     *, *::before, *::after {
@@ -665,6 +665,42 @@
 
     footer a:hover {
       color: var(--text-primary);
+    }
+
+    /* Analytics Section */
+    .analytics-section {
+      margin-bottom: 32px;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .analytics-card {
+      background: var(--card-elevated);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 300px;
+    }
+
+    .analytics-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     /* DASHBOARD */
@@ -1939,6 +1975,25 @@
       </div>
     </div>
 
+    <!-- ANALYTICS SECTION -->
+    <div class="analytics-section" id="analyticsSection" style="display: none;">
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Financial Analytics</h2>
+        </div>
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <div class="analytics-label">Income Trend</div>
+            <canvas id="trendChart"></canvas>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-label">Revenue Mix</div>
+            <canvas id="mixChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="main-layout">
       <div class="section">
         <div class="section-header">
@@ -2234,6 +2289,9 @@
     let selectedCategory = 'sponsorship';
     let cookieConsent = localStorage.getItem('cookie_consent') === 'accepted';
     let tourShown = localStorage.getItem('tour_shown') === 'true';
+    let trendChart = null;
+    let mixChart = null;
+
 
     // ============================================
     // TOAST NOTIFICATIONS
@@ -2455,9 +2513,124 @@
     }
 
     // ============================================
+    // ANALYTICS
+    // ============================================
+    async function updateAnalytics() {
+      if (!user || user.user_metadata?.tier !== 'pro') {
+        document.getElementById('analyticsSection').style.display = 'none';
+        return;
+      }
+      document.getElementById('analyticsSection').style.display = 'block';
+
+      // 1. Aggregate Income Trend (Monthly)
+      const monthlyData = {};
+      entries.forEach(e => {
+        const key = e.monthKey; // e.g. "2026-01"
+        monthlyData[key] = (monthlyData[key] || 0) + e.amount;
+      });
+
+      const sortedKeys = Object.keys(monthlyData).sort();
+      const labels = sortedKeys.map(key => {
+        const [year, month] = key.split('-');
+        const date = new Date(parseInt(year), parseInt(month) - 1, 1);
+        return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+      });
+      const totals = sortedKeys.map(key => monthlyData[key]);
+
+      // 2. Aggregate Revenue Mix (Category)
+      const categoryData = {};
+      entries.forEach(e => {
+        categoryData[e.category] = (categoryData[e.category] || 0) + e.amount;
+      });
+
+      const categories = Object.keys(categoryData);
+      const categoryTotals = categories.map(cat => categoryData[cat]);
+      const categoryColors = {
+        sponsorship: '#3B82F6',
+        platform: '#A855F7',
+        membership: '#EC4899',
+        affiliate: '#22C55E',
+        course: '#F97316',
+        other: '#8B8B8B'
+      };
+      const colors = categories.map(cat => categoryColors[cat] || '#8B8B8B');
+
+      // 3. Render/Update Charts
+      const trendCtx = document.getElementById('trendChart').getContext('2d');
+      if (trendChart) {
+        trendChart.destroy();
+      }
+      trendChart = new Chart(trendCtx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Monthly Income',
+            data: totals,
+            borderColor: '#22C55E',
+            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                color: '#8B8B8B',
+                callback: value => '$' + value.toLocaleString()
+              },
+              grid: { color: '#2A2A2A' }
+            },
+            x: {
+              ticks: { color: '#8B8B8B' },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+
+      const mixCtx = document.getElementById('mixChart').getContext('2d');
+      if (mixChart) {
+        mixChart.destroy();
+      }
+      mixChart = new Chart(mixCtx, {
+        type: 'doughnut',
+        data: {
+          labels: categories.map(cat => getCategoryLabel(cat)),
+          datasets: [{
+            data: categoryTotals,
+            backgroundColor: colors,
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#8B8B8B',
+                usePointStyle: true,
+                padding: 20
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // ============================================
     // UI UPDATES
     // ============================================
-    function updateDisplay() {
+    async function updateDisplay() {
       const monthEntries = getCurrentEntries();
       const prevEntries = getPreviousMonthEntries();
       
@@ -2592,6 +2765,7 @@
             </div>
           `).join('');
       }
+      await updateAnalytics();
     }
 
     // ============================================

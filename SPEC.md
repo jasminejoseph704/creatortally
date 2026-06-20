@@ -50,6 +50,10 @@ The name evokes:
 - [x] Netlify function for Stripe checkout
 - [x] Environment variable template
 
+### ✅ Phase 4: Advanced Analytics (Complete)
+- [x] Visual Trend Analytics (Income Trend Line Chart)
+- [x] Revenue Mix Analytics (Category Doughnut Chart)
+
 ### 📋 Future Features
 - [ ] Real Supabase connection
 - [ ] Real Stripe checkout
@@ -140,7 +144,7 @@ creatortally/
 | Tier | Price | Features |
 |------|-------|----------|
 | Free | $0/mo | 20 entries/month, 1 month history |
-| Pro | $9/mo | Unlimited entries, 6 months history, bank connection, export, tax reminders |
+| Pro | $9/mo | Unlimited entries, Advanced Financial Analytics (Trends & Source Mix), bank connection, export, tax reminders |
 
 ---
 
